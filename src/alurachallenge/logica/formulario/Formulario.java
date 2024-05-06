@@ -4,7 +4,11 @@
  */
 package alurachallenge.logica.formulario;
 
-import alurachallenge.logica.monedas;
+import alurachallenge.logica.Datos.Datos;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,9 +18,9 @@ import javax.swing.JOptionPane;
 public class Formulario extends javax.swing.JFrame {
 
     public double total;
-    private double moneda1 = 0;
-    private double moneda2 = 0;
-
+    private String moneda1 = "";
+    private String moneda2 = "";
+    final Datos datos = new Datos();
     
     public Formulario() {
         initComponents();
@@ -34,43 +38,28 @@ public class Formulario extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         CBmoneda1 = new javax.swing.JComboBox<>();
-        CBmoneda2 = new javax.swing.JComboBox<>();
-        txtResultado = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         btnConvertir = new javax.swing.JButton();
         txtCantidad = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        CBmoneda2 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtResultado = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        CBmoneda1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccion...", "Libra Esterlina", "Euro", "Dólar", "Yen Japones", "Won Sul", "Peso Colombiano" }));
+        CBmoneda1.setFont(new java.awt.Font("Tw Cen MT", 3, 12)); // NOI18N
+        CBmoneda1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione la moneda a convertir:", "COP: Peso colombiano", "AED: Dirham de los Emiratos Árabes Unidos", "AFN: Afghani afgano", "ALL: Lek albanés", "AMD: Dram armenio", "ANG: Florín antillano neerlandés", "AOA: Kwanza angoleño", "ARS: Peso argentino", "AUD: Dólar australiano", "AWG: Florín arubeño", "AZN: Manat azerbaiyano", "BAM: Marco convertible de Bosnia y Herzegovina", "BBD: Dólar de Barbados", "BDT: Taka bangladesí", "BGN: Lev búlgaro", "BHD: Dinar bahreiní", "BIF: Franco burundés", "BMD: Dólar de Bermudas", "BND: Dólar de Brunéi", "BOB: Boliviano boliviano", "BRL: Real brasileño", "BSD: Dólar bahameño", "BTN: Ngultrum butanés", "BWP: Pula de Botswana", "BYN: Rublo bielorruso", "BZD: Dólar beliceño", "CAD: Dólar canadiense", "CDF: Franco congoleño", "CHF: Franco suizo", "CLP: Peso chileno", "CNY: Yuan chino", "CRC: Colón costarricense", "CUP: Peso cubano", "CVE: Escudo caboverdiano", "CZK: Corona checa", "DJF: Franco yibutiano", "DKK: Corona danesa", "DOP: Peso dominicano", "DZD: Dinar argelino", "EGP: Libra egipcia", "ERN: Nakfa eritreo", "ETB: Birr etíope", "EUR: Euro", "FJD: Dólar fiyiano", "FKP: Libra de las Islas Malvinas", "FOK: Dólar de las Islas Feroe", "GBP: Libra esterlina británica", "GEL: Lari georgiano", "GGP: Libra de Guernsey", "GHS: Cedi ghanés", "GIP: Libra de Gibraltar", "GMD: Dalasi gambiano", "GNF: Franco guineano", "GTQ: Quetzal guatemalteco", "GYD: Dólar guyanés", "HKD: Dólar de Hong Kong", "HNL: Lempira hondureño", "HRK: Kuna croata", "HTG: Gourde haitiano", "HUF: Forint húngaro", "IDR: Rupia indonesia", "ILS: Nuevo shekel israelí", "IMP: Libra de la Isla de Man", "INR: Rupia india", "IQD: Dinar iraquí", "IRR: Rial iraní", "ISK: Corona islandesa", "JEP: Libra de Jersey", "JMD: Dólar jamaicano", "JOD: Dinar jordano", "JPY: Yen japonés", "KES: Chelín keniata", "KGS: Som kirguís", "KHR: Riel camboyano", "KID: Dólar de Kiribati", "KMF: Franco comorense", "KRW: Won surcoreano", "KWD: Dinar kuwaití", "KYD: Dólar de las Islas Caimán", "KZT: Tenge kazajo", "LAK: Kip laosiano", "LBP: Libra libanesa", "LKR: Rupia de Sri Lanka", "LRD: Dólar liberiano", "LSL: Loti lesothense", "LYD: Dinar libio", "MAD: Dirham marroquí", "MDL: Leu moldavo", "MGA: Ariary malgache", "MKD: Dinar macedonio", "MMK: Kyat birmano", "MNT: Tugrik mongol", "MOP: Pataca de Macao", "MRU: Ouguiya mauritana", "MUR: Rupia mauriciana", "MVR: Rufiyaa de Maldivas", "MWK: Kwacha malauí", "MXN: Peso mexicano", "MYR: Ringgit malayo", "MZN: Metical mozambiqueño", "NAD: Dólar namibio", "NGN: Naira nigeriano", "NIO: Córdoba nicaragüense", "NOK: Corona noruega", "NPR: Rupia nepalesa", "NZD: Dólar neozelandés", "OMR: Rial omaní", "PAB: Balboa panameño", "PEN: Sol peruano", "PGK: Kina de Papúa Nueva Guinea", "PHP: Peso filipino", "PKR: Rupia pakistaní", "PLN: Złoty polaco", "PYG: Guaraní paraguayo", "QAR: Riyal qatarí", "RON: Leu rumano", "RSD: Dinar serbio", "RUB: Rublo ruso", "RWF: Franco ruandés", "SAR: Riyal saudí", "SBD: Dólar de las Islas Salomón", "SCR: Rupia seychelense", "SDG: Libra sudanesa", "SEK: Corona sueca", "SGD: Dólar de Singapur", "SHP: Libra de Santa Elena", "SLE: Leone sierraleonés", "SLL: Leone de Sierra Leona", "SOS: Chelín somalí", "SRD: Dólar surinamés", "SSP: Libra sursudanesa", "STN: Dobra santotomense", "SYP: Libra siria", "SZL: Lilangeni suazi", "THB: Baht tailandés", "TJS: Somoni tayiko", "TMT: Manat turcomano", "TND: Dinar tunecino", "TOP: Pa'anga tongano", "TRY: Lira turca", "TTD: Dólar de Trinidad y Tobago", "TVD: Dólar tuvaluano", "TWD: Nuevo dólar taiwanés", "TZS: Chelín tanzano", "UAH: Hryvnia ucraniano", "UGX: Chelín ugandés", "USD: Dólar estadounidense", "UYU: Peso uruguayo", "UZS: Som uzbeko", "VES: Bolívar venezolano", "VND: Dong vietnamita", "VUV: Vatu vanuatuense", "WST: Tala samoano", "XAF: Franco CFA de África Central", "XCD: Dólar del Caribe Oriental", "XDR: Derechos especiales de giro", "XOF: Franco CFA de África Occidental", "XPF: Franco CFP", "YER: Rial yemení", "ZAR: Rand sudafricano", "ZMW: Kwacha zambiano", "ZWL: Dólar zimbabuense", " " }));
         CBmoneda1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CBmoneda1ActionPerformed(evt);
             }
         });
 
-        CBmoneda2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selección...", "Libra Esterlina", "Euro", "Dólar", "Yen Japones", "Won Sul", "Peso Colombiano" }));
-        CBmoneda2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CBmoneda2ActionPerformed(evt);
-            }
-        });
-
-        txtResultado.setEditable(false);
-        txtResultado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtResultadoActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Moneda 1");
-
-        jLabel2.setText("Moneda 2");
-
+        btnConvertir.setFont(new java.awt.Font("Tw Cen MT", 3, 12)); // NOI18N
         btnConvertir.setText("Convertir");
         btnConvertir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +67,8 @@ public class Formulario extends javax.swing.JFrame {
             }
         });
 
+        txtCantidad.setText("1.0");
+        txtCantidad.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         txtCantidad.setName("txtCantidad"); // NOI18N
         txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -85,133 +76,120 @@ public class Formulario extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Tw Cen MT", 3, 12)); // NOI18N
         jLabel3.setText("Cantidad");
+
+        CBmoneda2.setFont(new java.awt.Font("Tw Cen MT", 3, 12)); // NOI18N
+        CBmoneda2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione la moneda destino:", "COP: Peso colombiano", "AED: Dirham de los Emiratos Árabes Unidos", "AFN: Afghani afgano", "ALL: Lek albanés", "AMD: Dram armenio", "ANG: Florín antillano neerlandés", "AOA: Kwanza angoleño", "ARS: Peso argentino", "AUD: Dólar australiano", "AWG: Florín arubeño", "AZN: Manat azerbaiyano", "BAM: Marco convertible de Bosnia y Herzegovina", "BBD: Dólar de Barbados", "BDT: Taka bangladesí", "BGN: Lev búlgaro", "BHD: Dinar bahreiní", "BIF: Franco burundés", "BMD: Dólar de Bermudas", "BND: Dólar de Brunéi", "BOB: Boliviano boliviano", "BRL: Real brasileño", "BSD: Dólar bahameño", "BTN: Ngultrum butanés", "BWP: Pula de Botswana", "BYN: Rublo bielorruso", "BZD: Dólar beliceño", "CAD: Dólar canadiense", "CDF: Franco congoleño", "CHF: Franco suizo", "CLP: Peso chileno", "CNY: Yuan chino", "CRC: Colón costarricense", "CUP: Peso cubano", "CVE: Escudo caboverdiano", "CZK: Corona checa", "DJF: Franco yibutiano", "DKK: Corona danesa", "DOP: Peso dominicano", "DZD: Dinar argelino", "EGP: Libra egipcia", "ERN: Nakfa eritreo", "ETB: Birr etíope", "EUR: Euro", "FJD: Dólar fiyiano", "FKP: Libra de las Islas Malvinas", "FOK: Dólar de las Islas Feroe", "GBP: Libra esterlina británica", "GEL: Lari georgiano", "GGP: Libra de Guernsey", "GHS: Cedi ghanés", "GIP: Libra de Gibraltar", "GMD: Dalasi gambiano", "GNF: Franco guineano", "GTQ: Quetzal guatemalteco", "GYD: Dólar guyanés", "HKD: Dólar de Hong Kong", "HNL: Lempira hondureño", "HRK: Kuna croata", "HTG: Gourde haitiano", "HUF: Forint húngaro", "IDR: Rupia indonesia", "ILS: Nuevo shekel israelí", "IMP: Libra de la Isla de Man", "INR: Rupia india", "IQD: Dinar iraquí", "IRR: Rial iraní", "ISK: Corona islandesa", "JEP: Libra de Jersey", "JMD: Dólar jamaicano", "JOD: Dinar jordano", "JPY: Yen japonés", "KES: Chelín keniata", "KGS: Som kirguís", "KHR: Riel camboyano", "KID: Dólar de Kiribati", "KMF: Franco comorense", "KRW: Won surcoreano", "KWD: Dinar kuwaití", "KYD: Dólar de las Islas Caimán", "KZT: Tenge kazajo", "LAK: Kip laosiano", "LBP: Libra libanesa", "LKR: Rupia de Sri Lanka", "LRD: Dólar liberiano", "LSL: Loti lesothense", "LYD: Dinar libio", "MAD: Dirham marroquí", "MDL: Leu moldavo", "MGA: Ariary malgache", "MKD: Dinar macedonio", "MMK: Kyat birmano", "MNT: Tugrik mongol", "MOP: Pataca de Macao", "MRU: Ouguiya mauritana", "MUR: Rupia mauriciana", "MVR: Rufiyaa de Maldivas", "MWK: Kwacha malauí", "MXN: Peso mexicano", "MYR: Ringgit malayo", "MZN: Metical mozambiqueño", "NAD: Dólar namibio", "NGN: Naira nigeriano", "NIO: Córdoba nicaragüense", "NOK: Corona noruega", "NPR: Rupia nepalesa", "NZD: Dólar neozelandés", "OMR: Rial omaní", "PAB: Balboa panameño", "PEN: Sol peruano", "PGK: Kina de Papúa Nueva Guinea", "PHP: Peso filipino", "PKR: Rupia pakistaní", "PLN: Złoty polaco", "PYG: Guaraní paraguayo", "QAR: Riyal qatarí", "RON: Leu rumano", "RSD: Dinar serbio", "RUB: Rublo ruso", "RWF: Franco ruandés", "SAR: Riyal saudí", "SBD: Dólar de las Islas Salomón", "SCR: Rupia seychelense", "SDG: Libra sudanesa", "SEK: Corona sueca", "SGD: Dólar de Singapur", "SHP: Libra de Santa Elena", "SLE: Leone sierraleonés", "SLL: Leone de Sierra Leona", "SOS: Chelín somalí", "SRD: Dólar surinamés", "SSP: Libra sursudanesa", "STN: Dobra santotomense", "SYP: Libra siria", "SZL: Lilangeni suazi", "THB: Baht tailandés", "TJS: Somoni tayiko", "TMT: Manat turcomano", "TND: Dinar tunecino", "TOP: Pa'anga tongano", "TRY: Lira turca", "TTD: Dólar de Trinidad y Tobago", "TVD: Dólar tuvaluano", "TWD: Nuevo dólar taiwanés", "TZS: Chelín tanzano", "UAH: Hryvnia ucraniano", "UGX: Chelín ugandés", "USD: Dólar estadounidense", "UYU: Peso uruguayo", "UZS: Som uzbeko", "VES: Bolívar venezolano", "VND: Dong vietnamita", "VUV: Vatu vanuatuense", "WST: Tala samoano", "XAF: Franco CFA de África Central", "XCD: Dólar del Caribe Oriental", "XDR: Derechos especiales de giro", "XOF: Franco CFA de África Occidental", "XPF: Franco CFP", "YER: Rial yemení", "ZAR: Rand sudafricano", "ZMW: Kwacha zambiano", "ZWL: Dólar zimbabuense", " " }));
+        CBmoneda2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBmoneda2ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tw Cen MT", 3, 12)); // NOI18N
+        jLabel5.setText("Convertir a:");
+
+        txtResultado.setEditable(false);
+        txtResultado.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+
+        jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 12)); // NOI18N
+        jLabel1.setText("Conversor de monedas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(65, 65, 65)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnConvertir)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtCantidad)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnConvertir)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(CBmoneda1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(19, 19, 19)))
+                                .addComponent(CBmoneda2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(126, 126, 126))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(CBmoneda1, 0, 141, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(CBmoneda2, 0, 142, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(txtResultado))
-                        .addGap(72, 72, 72))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CBmoneda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CBmoneda2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CBmoneda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(CBmoneda2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnConvertir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConvertir)
+                    .addComponent(txtResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CBmoneda1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBmoneda1ActionPerformed
-        switch(CBmoneda1.getSelectedItem().toString()){
-            case "Libra Esterlina":
-                moneda1 = monedas.LIBRA_ESTERLINA.getValue();
-                break;
-            case "Euro":
-                moneda1 = monedas.EURO.getValue();
-                break;
-            case "Dólar":
-                moneda1 = monedas.DOLAR.getValue();
-                break;
-            case "Yen Japones":
-                moneda1 = monedas.YEN.getValue();
-                break;
-            case "Won Sul":
-                moneda1 = monedas.WONSUN.getValue();
-                break;
-            case "Peso Colombiano":    
-                moneda1 = monedas.PESO_COLOMBIANO.getValue();
-                break;
-            default:
-                break;
-        }
+       moneda1 = (String)CBmoneda1.getSelectedItem();
     }//GEN-LAST:event_CBmoneda1ActionPerformed
 
     private void CBmoneda2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBmoneda2ActionPerformed
-       switch(CBmoneda2.getSelectedItem().toString()){
-            case "Libra Esterlina":
-                moneda2 = monedas.LIBRA_ESTERLINA.getValue();
-                break;
-            case "Euro":
-                moneda2 = monedas.EURO.getValue();
-                break;
-            case "Dólar":
-                moneda2 = monedas.DOLAR.getValue();
-                break;
-            case "Yen Japones":
-                moneda2 = monedas.YEN.getValue();
-                break;
-            case "Won Sul":
-                moneda2 = monedas.WONSUN.getValue();
-                break;
-            case "Peso Colombiano":
-                moneda2 = monedas.PESO_COLOMBIANO.getValue();
-                break;
-            default:
-                break;
-        }
+      moneda2 = (String)CBmoneda2.getSelectedItem();
     }//GEN-LAST:event_CBmoneda2ActionPerformed
 
-    private void txtResultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtResultadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtResultadoActionPerformed
-
+    
     private void btnConvertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertirActionPerformed
-        
+
         if(CBmoneda1.getSelectedIndex()== 0 || CBmoneda2.getSelectedIndex()== 0 ){
             JOptionPane.showMessageDialog(rootPane, "Debe seleccionar un tipo de moneda");
         }else{
-            validarConversion(moneda1,moneda2);
+            try {
+                total = Double.parseDouble(txtCantidad.getText()) * datos.capturaMonedas(moneda1.substring(0,3), moneda2.substring(0,3));
+            } catch (IOException ex) {
+                Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException | NumberFormatException ex) {
+                Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Ingrese un valor mayor a 0");
+            }
             txtResultado.setText(String.valueOf("%.3f").formatted(total));
         }       
     }//GEN-LAST:event_btnConvertirActionPerformed
@@ -277,8 +255,9 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JButton btnConvertir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtResultado;
