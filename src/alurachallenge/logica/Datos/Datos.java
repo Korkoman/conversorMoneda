@@ -18,15 +18,21 @@ public class Datos {
     private String key = "04db5610cf54c1a553c4d49a/latest/";
     private String resultados(String moneda) throws IOException, InterruptedException {
 
-        String direccion = "https://v6.exchangerate-api.com/v6/"+key+moneda;
-        HttpClient client = HttpClient.newHttpClient();
+        try{
+            String direccion = "https://v6.exchangerate-api.com/v6/"+key+moneda;
+            HttpClient client = HttpClient.newHttpClient();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(direccion))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(direccion))
+                    .build();
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "EL API no está funcionando correctamente");
+        }
+
     }
 
     public double capturaMonedas(String moneda1, String moneda2) throws IOException, InterruptedException {
